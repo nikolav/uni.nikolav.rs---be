@@ -25,11 +25,16 @@ if all(not 'admin:email' in node for node in vars_data):
 db.session.commit()
 
 
+# upsert default admin and app-user
 email_    = os.getenv('ADMIN_EMAIL')
 password_ = os.getenv('ADMIN_PASSWORD')
 
+emailUser_    = os.getenv('USER_EMAIL')
+passwordUser_ = os.getenv('USER_PASSWORD')
+
+tag_users = Tags.by_name(TAG_USERS)
 docAdmin  = None
-tag_users = Tags.by_name(TAG_USERS);
+docUser   = None
 
 for d in tag_users.docs:
   if email_ == d.data['email']:
@@ -43,6 +48,22 @@ if not docAdmin:
               })
   tag_users.docs.append(docAdmin)
   db.session.add(docAdmin)
+
+db.session.commit()
+
+
+for d in tag_users.docs:
+  if emailUser_ == d.data['email']:
+    docUser = d
+    break
+
+if not docUser:
+  docUser = Docs(data = { 
+                'email'    : emailUser_, 
+                'password' : hashPassword(passwordUser_) 
+              })
+  tag_users.docs.append(docUser)
+  db.session.add(docUser)
 
 db.session.commit()
 
@@ -65,5 +86,10 @@ if not docAdmin.includes_tags(policy_fs_):
   tagPolicyFS.docs.append(docAdmin)
 # if not docAdmin.includes_tags(policy_all_):
 #   tagPolicyALL.docs.append(docAdmin)
+
+if not docUser.includes_tags(policy_email_):
+  tagPolicyEMAIL.docs.append(docUser)
+if not docUser.includes_tags(policy_fs_):
+  tagPolicyFS.docs.append(docUser)
 
 db.session.commit()
