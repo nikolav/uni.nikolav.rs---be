@@ -4,6 +4,7 @@ schema {
 }
 
 scalar JsonData
+scalar JsonDocsTags
 
 type Var {
   id: ID!
@@ -74,6 +75,9 @@ type Mutation {
   docsUpsert(topic: String!, data: JsonData!, id: ID): JsonData!
   docsRm(topic: String!, id: ID!): JsonData
   docUpsert(doc_id: String!, data: JsonData!): JsonData!
+
+  # manage docs/tags: id, { "@tag/foo": true, "@tag/bar": false }
+  docsTags(id: ID!, tags: JsonDocsTags!): JsonDocsTags!
 
   # users
   docsUsersAdd(email: String!, password: String!): ID
