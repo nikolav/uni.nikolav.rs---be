@@ -47,8 +47,15 @@ class SchemaTesting(Schema):
 @bp_testing.route('/', methods = ('POST',))
 @arguments_schema(SchemaTesting())
 def testing_home():
-  r = db.session.scalar(
-    db.select(literal_column('1 + 1').label('p'))
+  # Njvrw1gYEXd3yv:
+  print('---')
+  r = db.session.scalars(
+    db.select(Tags).join(Tags.docs).where(
+      # Docs.tags.any(Tags.tag == '@tasks:all'),
+      Docs.id == 2845,
+      # Tags.tag.like('Njvrw1gYEXd3yv:%'),
+    )
   )
-  print(r)
+  print('---')
+  print(r.all())
   return g.arguments, 200

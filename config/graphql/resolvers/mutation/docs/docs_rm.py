@@ -29,8 +29,8 @@ def resolve_docsRm(_obj, _info, topic, id):
 
       # for tag_ in doc.tags:
       #   tag_.docs.remove(doc)
-      # db.session.delete(doc)      
-
+      # db.session.delete(doc)
+      
       tagTopic = Tags.by_name(topic)
       tagTopic.docs.remove(doc)
       db.session.delete(doc)      
