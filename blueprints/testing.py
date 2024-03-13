@@ -48,14 +48,5 @@ class SchemaTesting(Schema):
 @arguments_schema(SchemaTesting())
 def testing_home():
   # Njvrw1gYEXd3yv:
-  print('---')
-  r = db.session.scalars(
-    db.select(Tags).join(Tags.docs).where(
-      # Docs.tags.any(Tags.tag == '@tasks:all'),
-      Docs.id == 2845,
-      # Tags.tag.like('Njvrw1gYEXd3yv:%'),
-    )
-  )
-  print('---')
-  print(r.all())
+  print('---foo')
   return g.arguments, 200

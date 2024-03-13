@@ -61,6 +61,7 @@ def storage_upload():
       # ensure path exists
       try:
         os.makedirs(os.path.dirname(filepath_))
+
       except:
         pass
       
